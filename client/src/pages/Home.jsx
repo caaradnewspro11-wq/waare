@@ -36,7 +36,7 @@ export default function Home() {
       <img src="/images/ali-sheelare.jpg" alt="Ali Sheelare, founder" />
       <div><h2>Ali Sheelare</h2><b>Founder of Ali Sheelare Documents</b>
         <p>I built this platform to make everyday document conversion fast, simple and secure for everyone.</p>
-        <p id="contact" className="note">Questions? Email <a href="mailto:hello@example.com">hello@example.com</a> (replace with your real address).</p></div></section>
+        <p id="contact" className="note">Contact: <a href="mailto:caaradyare89@gmail.com">caaradyare89@gmail.com</a> · Phone: <a href="tel:+252616534889">616534889</a></p></div></section>
     {tool && <Converter key={tool.id} tool={tool} onClose={() => setTool(null)} onDone={() => setTick((n) => n + 1)} />}
   </>);
 }

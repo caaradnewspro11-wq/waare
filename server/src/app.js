@@ -10,6 +10,7 @@ import os from 'node:os';
 import { auth } from './routes/auth.js';
 import { history } from './routes/history.js';
 import { optionalAuth } from './middleware/auth.js';
+import { dbReady } from './config/db.js';
 import { record } from './services/history.js';
 import { officeToPdf, pdfToWord, pdfToExcel } from './services/convert.js';
 
@@ -55,7 +56,7 @@ const origins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173').split(','
 app.use(cors({ origin: origins }));
 app.use('/api/convert', rateLimit({ windowMs: 15 * 60 * 1000, limit: 30 }));
 
-app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.get('/api/health', (req, res) => res.json({ ok: true, db: dbReady(), auth: Boolean(process.env.JWT_SECRET) }));
 
 app.post('/api/convert/:tool', (req, res, next) => {
   if (!TOOLS[req.params.tool]) return res.status(404).json({ error: 'Unknown conversion tool.' });
