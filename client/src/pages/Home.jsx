@@ -23,6 +23,7 @@ export default function Home() {
       <p>Convert Word, PDF and Excel files in seconds. Secure, simple, and ready to download.</p>
       <div className="row"><a className="btn" href="#tools" onClick={() => setTool(TOOLS[0])}>Start Converting</a><a className="btn ghost" href="#tools">Explore Tools</a></div>
       <HeroArt />
+      <div className="founder"><img src="/images/ali-sheelare.jpg" alt="Ali Sheelare" /><span><b>Ali Sheelare</b><small>Founder of Ali Sheelare Documents</small></span></div>
     </section>
     <section id="tools"><h2>Conversion Tools</h2>
       <div className="grid">{TOOLS.map((t) => (<article key={t.id} className="card"><t.icon size={40} /><h3>{t.title}</h3><p>{t.desc}</p><button className="btn" onClick={() => setTool(t)}>Convert Now</button></article>))}</div></section>
