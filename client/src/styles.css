@@ -45,3 +45,6 @@ footer a{color:var(--navy)}
 .founder{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:8px 18px 8px 8px;background:var(--soft);border-radius:40px;box-shadow:0 2px 10px #0001}
 .founder img{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--navy)}
 .founder span{display:grid;text-align:left}.founder small{color:#556}
+.stats .card h3{font-size:2rem;margin:4px 0 0}.stats{margin-bottom:16px}
+.tablewrap{overflow-x:auto;margin-top:16px}table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #e1e8f3;white-space:nowrap}th{background:var(--soft)}

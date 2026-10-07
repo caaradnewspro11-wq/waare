@@ -9,6 +9,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { auth } from './routes/auth.js';
 import { history } from './routes/history.js';
+import { admin } from './routes/admin.js';
 import { optionalAuth } from './middleware/auth.js';
 import { dbReady } from './config/db.js';
 import { record } from './services/history.js';
@@ -85,6 +86,7 @@ app.get('/api/convert/download/:id', async (req, res) => {
 
 app.use('/api/auth', auth);
 app.use('/api/history', history);
+app.use('/api/admin', admin);
 
 app.use((err, req, res, next) => {
   if (err.cause) console.error(err.cause);

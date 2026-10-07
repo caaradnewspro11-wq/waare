@@ -30,3 +30,6 @@ Health check path is preconfigured in `server/railway.json`.
 - Have Privacy/Terms text reviewed.
 - Railway's disk is ephemeral: converted files vanish on redeploy/restart (already the intended 30-minute lifetime).
 - Smoke test on the live URLs: all four conversions, register/login, history, download.
+
+## Admin
+Set `ADMIN_EMAILS` (comma-separated) on Railway. An account registering or signing in with one of those emails becomes admin and sees **Admin** in the header (`/admin`: stats, users, conversions). Register that account right after setting the variable.
