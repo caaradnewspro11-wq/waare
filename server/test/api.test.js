@@ -35,3 +35,16 @@ test('real round trip: xlsx -> pdf -> docx / xlsx', { skip: !hasSoffice, timeout
     assert.equal(out.subarray(0, 2).toString(), 'PK'); // valid OOXML zip
   }
 });
+
+const hasOcr = (() => { try { execFileSync('tesseract', ['--version']); execFileSync('pdftoppm', ['-v']); return true; } catch { return false; } })();
+test('OCR: scanned PNG and image-only PDF -> editable DOCX with the real text', { skip: !hasOcr, timeout: 180000 }, async () => {
+  const { readFileSync } = await import('node:fs');
+  const { default: JSZip } = await import('jszip');
+  for (const [name, type] of [['scan.png', 'image/png'], ['scan.pdf', 'application/pdf']]) {
+    const r = await send('scan-to-word', readFileSync(new URL(`./fixtures/${name}`, import.meta.url)), name, type);
+    assert.equal(r.status, 200, name);
+    const docx = Buffer.from(await (await fetch(base + (await r.json()).downloadUrl)).arrayBuffer());
+    const xml = await (await JSZip.loadAsync(docx)).file('word/document.xml').async('string');
+    assert.match(xml, /Invoice/); assert.match(xml, /editable/);
+  }
+});

@@ -48,3 +48,4 @@ footer a{color:var(--navy)}
 .stats .card h3{font-size:2rem;margin:4px 0 0}.stats{margin-bottom:16px}
 .tablewrap{overflow-x:auto;margin-top:16px}table{width:100%;border-collapse:collapse;font-size:.92rem}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #e1e8f3;white-space:nowrap}th{background:var(--soft)}
+.langsel{display:grid;gap:4px;font-weight:600}.langsel select{padding:9px 10px;border:1px solid #b8c4d8;border-radius:8px;font:inherit}

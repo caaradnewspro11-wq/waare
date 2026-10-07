@@ -6,6 +6,8 @@ Full-stack document converter: Word->PDF, PDF->Word, PDF->Excel, Excel->PDF. Rea
 - **LibreOffice** (`soffice` on PATH) for Word/Excel -> PDF: `sudo apt install libreoffice-writer libreoffice-calc`
 - **MongoDB** (optional; needed only for accounts & history). Local: `mongod`, or a free MongoDB Atlas URI.
 
+- Optional OCR (Scan to Word): `sudo apt install tesseract-ocr tesseract-ocr-eng tesseract-ocr-ara poppler-utils` (+ Somali: download `som.traineddata` from tesseract-ocr/tessdata_fast into the tessdata folder). The Docker image already includes all of this.
+
 ## Run locally
     cd server && cp .env.example .env && npm install && npm start     # http://localhost:4000
     cd client && npm install && npm run dev                           # http://localhost:5173 (proxies /api)
@@ -17,7 +19,7 @@ Replace `client/public/images/ali-sheelare.jpg`. Update the contact email in `cl
 ## API
 | Method | Path | Notes |
 |---|---|---|
-| POST | /api/convert/{word-to-pdf, pdf-to-word, pdf-to-excel, excel-to-pdf} | multipart `file`; optional Bearer token; returns `{id, downloadUrl}` |
+| POST | /api/convert/{word-to-pdf, pdf-to-word, pdf-to-excel, excel-to-pdf, scan-to-word (optional `lang`: eng, som, ara, eng+som, eng+ara)} | multipart `file`; optional Bearer token; returns `{id, downloadUrl}` |
 | GET | /api/convert/download/:id | UUID only |
 | POST | /api/auth/register, /api/auth/login | JSON; returns `{token, user}` |
 | GET | /api/history | Bearer token required |

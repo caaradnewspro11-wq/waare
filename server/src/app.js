@@ -13,6 +13,7 @@ import { admin } from './routes/admin.js';
 import { optionalAuth } from './middleware/auth.js';
 import { dbReady } from './config/db.js';
 import { record } from './services/history.js';
+import { scanToWord } from './services/ocr.js';
 import { officeToPdf, pdfToWord, pdfToExcel } from './services/convert.js';
 
 const DIR = path.join(os.tmpdir(), 'ali-docs');
@@ -24,6 +25,7 @@ const TOOLS = {
   'word-to-pdf':  { exts: ['.docx'], mimes: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'], fn: officeToPdf },
   'excel-to-pdf': { exts: ['.xlsx', '.xls'], mimes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'], fn: officeToPdf },
   'pdf-to-word':  { exts: ['.pdf'], mimes: ['application/pdf'], fn: pdfToWord },
+  'scan-to-word': { exts: ['.pdf', '.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp'], mimes: ['application/pdf', 'image/jpeg', 'image/png', 'image/tiff', 'image/bmp'], fn: scanToWord },
   'pdf-to-excel': { exts: ['.pdf'], mimes: ['application/pdf'], fn: pdfToExcel },
 };
 
@@ -66,7 +68,7 @@ app.post('/api/convert/:tool', (req, res, next) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
   const id = crypto.randomUUID();
   try {
-    await TOOLS[req.params.tool].fn(req.file.path, DIR, id);
+    await TOOLS[req.params.tool].fn(req.file.path, DIR, id, { lang: req.body?.lang });
     await record(req, { outputId: id, status: 'completed', expiresAt: new Date(Date.now() + TTL_MS) });
     res.json({ id, downloadUrl: `/api/convert/download/${id}`, expiresInMinutes: TTL_MS / 60000 });
   } catch (e) {

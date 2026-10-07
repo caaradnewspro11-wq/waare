@@ -10,7 +10,7 @@ export default function Converter({ tool, onClose, onDone }) {
   const [file, setFile] = useState(null);
   const [phase, setPhase] = useState('idle'); // idle | uploading | converting | done | error
   const [pct, setPct] = useState(0), [msg, setMsg] = useState(''), [link, setLink] = useState('');
-  const input = useRef(); const toast = useToast();
+  const [lang, setLang] = useState('eng'); const input = useRef(); const toast = useToast();
   const fail = (m) => { setPhase('error'); setMsg(m); toast(m, 'err'); };
   const reset = () => { setFile(null); setPhase('idle'); setPct(0); setMsg(''); setLink(''); };
   const pick = (f) => {
@@ -21,7 +21,7 @@ export default function Converter({ tool, onClose, onDone }) {
     setFile(f); setPhase('idle'); setMsg('');
   };
   const convert = async () => {
-    const body = new FormData(); body.append('file', file); setPhase('uploading'); setPct(0);
+    const body = new FormData(); if (tool.ocr) body.append('lang', lang); body.append('file', file); setPhase('uploading'); setPct(0);
     try {
       const { data } = await api.post(`/api/convert/${tool.id}`, body, {
         onUploadProgress: (e) => { setPct(Math.round((e.loaded / e.total) * 100)); if (e.loaded === e.total) setPhase('converting'); },
@@ -47,6 +47,8 @@ export default function Converter({ tool, onClose, onDone }) {
         )}
         {busy && <div><div className="bar"><i style={{ width: phase === 'uploading' ? pct + '%' : '100%' }} className={phase === 'converting' ? 'pulse' : ''} /></div>
           <small>{phase === 'uploading' ? `Uploading ${pct}%` : 'Converting…'}</small></div>}
+        {tool.ocr && !busy && phase !== 'done' && (<label className="langsel">Document language<select value={lang} onChange={(e) => setLang(e.target.value)}>
+          <option value="eng">English</option><option value="som">Somali</option><option value="ara">Arabic</option><option value="eng+som">English + Somali</option><option value="eng+ara">English + Arabic</option></select></label>)}
         {phase === 'error' && <p className="err"><AlertCircle size={16} /> {msg}</p>}
         {phase === 'done' && <p className="ok"><CheckCircle2 size={16} /> Done. Your file is kept for 30 minutes, then deleted.</p>}
         <div className="row">
