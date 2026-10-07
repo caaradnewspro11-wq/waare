@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/User.js';
+import GuestbookEntry from '../models/GuestbookEntry.js';
 import ConversionHistory from '../models/ConversionHistory.js';
 import { dbReady } from '../config/db.js';
 import { requireAuth } from '../middleware/auth.js';
@@ -61,5 +62,12 @@ admin.get('/conversions', h(async (req, res) => {
 admin.delete('/conversions/:id', h(async (req, res) => {
   if (badId(req, res)) return;
   await ConversionHistory.findByIdAndDelete(req.params.id);
+  res.json({ ok: true });
+}));
+
+admin.get('/guestbook', h(async (req, res) => res.json(await GuestbookEntry.find().sort('-createdAt').limit(200).lean())));
+admin.delete('/guestbook/:id', h(async (req, res) => {
+  if (badId(req, res)) return;
+  await GuestbookEntry.findByIdAndDelete(req.params.id);
   res.json({ ok: true });
 }));

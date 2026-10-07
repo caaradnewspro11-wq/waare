@@ -19,6 +19,8 @@ test('unknown tool -> 404', async () => assert.equal((await send('nope', 'x', 'a
 test('wrong type -> 415', async () => assert.equal((await send('pdf-to-word', 'x', 'a.txt', 'text/plain')).status, 415));
 test('bad download id -> 400', async () => assert.equal((await fetch(`${base}/api/convert/download/..%2f..%2fetc`)).status >= 400, true));
 test('admin requires auth', async () => assert.equal((await fetch(`${base}/api/admin/stats`)).status, 401));
+test('guestbook unavailable without database -> 503', async () => assert.equal((await fetch(`${base}/api/guestbook`)).status, 503));
+test('admin cannot delete guestbook without auth', async () => assert.equal((await fetch(`${base}/api/admin/guestbook/abc`, { method: 'DELETE' })).status, 401));
 test('history requires auth', async () => assert.equal((await fetch(`${base}/api/history`)).status, 401));
 test('corrupt PDF is rejected, not faked', async () => assert.equal((await send('pdf-to-word', 'not a pdf', 'a.pdf', 'application/pdf')).status, 500));
 

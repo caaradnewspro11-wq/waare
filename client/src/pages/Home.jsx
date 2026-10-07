@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FileText, FileSpreadsheet, FileType2, ScanText } from 'lucide-react';
 import Converter from '../components/Converter';
 import RecentList from '../components/RecentList';
+import Guestbook from '../components/Guestbook';
 import HeroArt from '../components/HeroArt';
 import { useAuth, useTitle } from '../services/context';
 
@@ -33,6 +34,7 @@ export default function Home() {
       <p className="note">Uploads are deleted right after conversion; results are deleted after 30 minutes. PDF→Word/Excel work on text-based PDFs; for scanned papers and photos use Scan to Word (OCR). OCR accuracy depends on scan quality, handwriting is not supported, and tables, images and layout are not preserved, so always proofread the result.</p></section>
     <section><h2>Recent Conversions</h2>
       {user ? <RecentList limit={5} refreshKey={tick} /> : <div className="empty"><p><Link to="/login">Sign in</Link> to keep a history of your conversions. Guests can convert freely.</p></div>}</section>
+    <section id="visitors"><h2>Visitors</h2><p className="note">Sign your name and say hello. Everyone can see this list.</p><Guestbook limit={6} showAllLink /></section>
     <section id="about" className="about">
       <img src="/images/ali-sheelare.jpg" alt="Ali Sheelare, founder" />
       <div><h2>Ali Sheelare</h2><b>Founder of Ali Sheelare Documents</b>
