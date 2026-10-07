@@ -5,7 +5,9 @@ import path from 'node:path';
 import { Document, Packer, Paragraph, TextRun, PageBreak } from 'docx';
 const run = promisify(execFile);
 
-export const OCR_LANGS = ['eng', 'som', 'ara', 'eng+som', 'eng+ara'];
+// Tesseract has no official Somali model; Somali is written in plain Latin letters, so it uses the English model.
+export const OCR_LANGS = ['eng', 'ara', 'eng+ara'];
+const ALIAS = { som: 'eng', 'eng+som': 'eng' };
 const MAX_PAGES = 15;
 let installed; // languages actually present on this server
 async function available() {
@@ -19,7 +21,8 @@ async function available() {
 // Scanned PDF / image -> editable DOCX via Tesseract OCR (+ Poppler for PDF pages)
 export async function scanToWord(inPath, outDir, id, { lang } = {}) {
   const have = await available();
-  const wanted = (OCR_LANGS.includes(lang) ? lang : 'eng').split('+').filter((l) => have.has(l));
+  const req = ALIAS[lang] || lang;
+  const wanted = (OCR_LANGS.includes(req) ? req : 'eng').split('+').filter((l) => have.has(l));
   const useLang = wanted.length ? wanted.join('+') : 'eng';
   const work = path.join(outDir, `ocr-${id}`);
   await fs.mkdir(work);
