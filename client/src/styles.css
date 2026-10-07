@@ -50,3 +50,4 @@ footer a{color:var(--navy)}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #e1e8f3;white-space:nowrap}th{background:var(--soft)}
 .langsel{display:grid;gap:4px;font-weight:600}.langsel select{padding:9px 10px;border:1px solid #b8c4d8;border-radius:8px;font:inherit}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}.gform{margin-bottom:20px}.guests .msg{font-style:normal;background:none;color:var(--txt);padding:0;font-size:.95rem;margin:2px 0}
+.guests .form input{padding:8px 10px;border:1px solid #b8c4d8;border-radius:8px;font:inherit;width:100%}.ownbtns{display:flex!important;flex:0 0 auto!important;gap:12px;min-width:0!important}
