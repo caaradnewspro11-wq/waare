@@ -45,10 +45,10 @@ export default function Converter({ tool, onClose, onDone }) {
         ) : (
           <div className="file"><b>{file.name}</b><span>{size(file.size)}</span>{!busy && phase !== 'done' && <button className="link" onClick={reset}>Remove File</button>}</div>
         )}
-        {busy && <div><div className="bar"><i style={{ width: phase === 'uploading' ? pct + '%' : '100%' }} className={phase === 'converting' ? 'pulse' : ''} /></div>
-          <small>{phase === 'uploading' ? `Uploading ${pct}%` : 'Converting…'}</small></div>}
         {tool.ocr && !busy && phase !== 'done' && (<label className="langsel">Document language<select value={lang} onChange={(e) => setLang(e.target.value)}>
           <option value="eng">English / Somali (Latin letters)</option><option value="ara">Arabic</option><option value="eng+ara">English + Arabic</option></select></label>)}
+        {busy && <div><div className="bar"><i style={{ width: phase === 'uploading' ? pct + '%' : '100%' }} className={phase === 'converting' ? 'pulse' : ''} /></div>
+          <small>{phase === 'uploading' ? `Uploading ${pct}%` : 'Converting…'}</small></div>}
         {phase === 'error' && <p className="err"><AlertCircle size={16} /> {msg}</p>}
         {phase === 'done' && <p className="ok"><CheckCircle2 size={16} /> Done. Your file is kept for 30 minutes, then deleted.</p>}
         <div className="row">

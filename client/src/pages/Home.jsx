@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, FileSpreadsheet, FileType2, ScanText } from 'lucide-react';
+import { FileText, FileSpreadsheet, FileType2, ScanText, PenLine } from 'lucide-react';
 import Converter from '../components/Converter';
 import RecentList from '../components/RecentList';
 import Guestbook from '../components/Guestbook';
@@ -10,9 +10,10 @@ import { useAuth, useTitle } from '../services/context';
 const TOOLS = [
   { id: 'word-to-pdf', title: 'Word to PDF', desc: 'Turn DOCX files into polished PDFs.', accept: ['.docx'], icon: FileText },
   { id: 'pdf-to-word', title: 'PDF to Word', desc: 'Get an editable DOCX from a text-based PDF.', accept: ['.pdf'], icon: FileType2 },
-  { id: 'scan-to-word', title: 'Scan to Word (OCR)', desc: 'Turn scanned papers, photos and image PDFs into an editable Word file.', accept: ['.pdf', '.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp'], icon: ScanText, ocr: true },
+  { id: 'scan-to-word', title: 'Scan to Word (OCR)', desc: 'Turn scanned papers, photos and image PDFs into an editable Word file, tables included.', accept: ['.pdf', '.jpg', '.jpeg', '.png', '.tif', '.tiff', '.bmp', '.webp'], icon: ScanText, ocr: true },
   { id: 'pdf-to-excel', title: 'PDF to Excel', desc: 'Extract tabular data into an XLSX sheet.', accept: ['.pdf'], icon: FileSpreadsheet },
   { id: 'excel-to-pdf', title: 'Excel to PDF', desc: 'Convert XLSX/XLS spreadsheets to PDF.', accept: ['.xlsx', '.xls'], icon: FileSpreadsheet },
+  { id: 'scan-editor', title: 'Edit Scanned Document', desc: 'Click a word on a scan or photo, type a new one, and it is redrawn in a matching font.', icon: PenLine, link: '/scan-editor' },
 ];
 
 export default function Home() {
@@ -28,10 +29,10 @@ export default function Home() {
       <div className="founder"><img src="/images/ali-sheelare.jpg" alt="Ali Sheelare" /><span><b>Ali Sheelare</b><small>Founder of Ali Sheelare Documents</small></span></div>
     </section>
     <section id="tools"><h2>Conversion Tools</h2>
-      <div className="grid">{TOOLS.map((t) => (<article key={t.id} className="card"><t.icon size={40} /><h3>{t.title}</h3><p>{t.desc}</p><button className="btn" onClick={() => setTool(t)}>Convert Now</button></article>))}</div></section>
+      <div className="grid">{TOOLS.map((t) => (<article key={t.id} className="card"><t.icon size={40} /><h3>{t.title}</h3><p>{t.desc}</p>{t.link ? <Link className="btn" to={t.link}>Open Editor</Link> : <button className="btn" onClick={() => setTool(t)}>Convert Now</button>}</article>))}</div></section>
     <section id="how"><h2>How It Works</h2>
       <ol className="steps"><li>Choose a tool</li><li>Upload your file</li><li>Download the result</li></ol>
-      <p className="note">Uploads are deleted right after conversion; results are deleted after 30 minutes. PDF→Word/Excel work on text-based PDFs; for scanned papers and photos use Scan to Word (OCR). OCR accuracy depends on scan quality, handwriting is not supported, and tables, images and layout are not preserved, so always proofread the result.</p></section>
+      <p className="note">Uploads are deleted right after conversion; results are deleted after 30 minutes. PDF→Word/Excel work on text-based PDFs and keep tables as real tables; for scanned papers and photos use Scan to Word (OCR) or the Scan Editor. OCR accuracy depends on scan quality; handwriting is not supported, images and complex layouts are not preserved, so always proofread the result.</p></section>
     <section><h2>Recent Conversions</h2>
       {user ? <RecentList limit={5} refreshKey={tick} /> : <div className="empty"><p><Link to="/login">Sign in</Link> to keep a history of your conversions. Guests can convert freely.</p></div>}</section>
     <section id="visitors"><h2>Visitors</h2><p className="note">Sign your name and say hello. Everyone can see this list.</p><Guestbook limit={6} showAllLink /></section>

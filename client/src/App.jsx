@@ -6,6 +6,7 @@ import AuthPage from './pages/Auth';
 import History from './pages/History';
 import Admin from './pages/Admin';
 import Visitors from './pages/Visitors';
+import ScanEditor from './pages/ScanEditor';
 import { Privacy, Terms, NotFound } from './pages/Static';
 import { useAuth } from './services/context';
 
@@ -22,14 +23,14 @@ export default function App() {
     <header><Link className="logo" to="/"><FileText /> Ali Sheelare Documents</Link>
       <button className="burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}><Menu /></button>
       <nav className={open ? 'open' : ''}>
-        <NavLink to="/">Home</NavLink><Link to="/#tools">All Tools</Link><Link to="/#how">How It Works</Link><Link to="/#about">About</Link><NavLink to="/visitors">Visitors</NavLink>
+        <NavLink to="/">Home</NavLink><Link to="/#tools">All Tools</Link><Link to="/#how">How It Works</Link><Link to="/#about">About</Link><NavLink to="/scan-editor">Scan Editor</NavLink><NavLink to="/visitors">Visitors</NavLink>
         {user ? <><NavLink to="/history">History</NavLink>{user.role === 'admin' && <NavLink to="/admin">Admin</NavLink>}<button className="link navbtn" onClick={logout}>Sign out</button></>
           : <><NavLink to="/login">Sign In</NavLink><Link className="btn sm" to="/register">Get Started</Link></>}
       </nav></header>
     <ScrollToHash />
     <main><Routes>
       <Route path="/" element={<Home />} /><Route path="/login" element={<AuthPage mode="login" />} /><Route path="/register" element={<AuthPage mode="register" />} />
-      <Route path="/history" element={<History />} /><Route path="/admin" element={<Admin />} /><Route path="/visitors" element={<Visitors />} /><Route path="/privacy" element={<Privacy />} /><Route path="/terms" element={<Terms />} /><Route path="*" element={<NotFound />} />
+      <Route path="/history" element={<History />} /><Route path="/admin" element={<Admin />} /><Route path="/visitors" element={<Visitors />} /><Route path="/scan-editor" element={<ScanEditor />} /><Route path="/privacy" element={<Privacy />} /><Route path="/terms" element={<Terms />} /><Route path="*" element={<NotFound />} />
     </Routes></main>
     <footer>© Ali Sheelare Documents · <Link to="/privacy">Privacy</Link> · <Link to="/terms">Terms</Link> · <Link to="/#contact">Contact</Link></footer>
   </>);

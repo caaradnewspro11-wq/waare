@@ -13,7 +13,6 @@ const same = (a, b) => a.length === b.length && crypto.timingSafeEqual(Buffer.fr
 const limit = (n, message) => rateLimit({ windowMs: 60 * 60 * 1000, limit: n, message: { error: message } });
 guestbook.use((req, res, next) => (dbReady() ? next() : res.status(503).json({ error: 'The visitors list is not available right now.' })));
 
-// Returns the entry only if the request carries the secret token issued when it was created.
 async function owned(req, res) {
   if (!mongoose.isValidObjectId(req.params.id)) { res.status(400).json({ error: 'Invalid id.' }); return null; }
   const token = String(req.get('x-edit-token') || '');
@@ -24,13 +23,11 @@ async function owned(req, res) {
   return entry;
 }
 
-// Public read: name, message, date, edited flag (+ id so an author's browser can recognise its own entries)
 guestbook.get('/', h(async (req, res) => {
   const n = Math.min(Number(req.query.limit) || 50, 100);
   res.json(await GuestbookEntry.find().sort('-createdAt').limit(n).select('name message edited createdAt').lean());
 }));
 
-// Public write: 5 per IP per hour. Returns a secret editToken, shown only once.
 guestbook.post('/', express.json({ limit: '4kb' }), limit(5, 'Too many entries. Please try again later.'), h(async (req, res) => {
   if (req.body?.website) return res.status(201).json({ ok: true }); // honeypot
   const name = clean(req.body?.name, 60), message = clean(req.body?.message, 200);

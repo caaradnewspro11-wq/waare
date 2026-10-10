@@ -32,4 +32,7 @@ Health check path is preconfigured in `server/railway.json`.
 - Smoke test on the live URLs: all four conversions, register/login, history, download.
 
 ## Admin
-Set `ADMIN_EMAILS` (comma-separated) on Railway. An account registering or signing in with one of those emails becomes admin and sees **Admin** in the header (`/admin`: stats, users, conversions). Register that account right after setting the variable.
+Set `ADMIN_EMAILS` (comma-separated) on Railway; an account registering or signing in with one of those emails becomes admin and sees **Admin** in the header (`/admin`).
+
+## Scan Editor / OCR
+The Docker image already installs Tesseract (English + Arabic), Poppler and fonts. Railway needs no extra variables. The first build takes longer (LibreOffice + Tesseract).

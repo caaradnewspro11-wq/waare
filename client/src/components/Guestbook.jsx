@@ -12,7 +12,7 @@ const saveOwn = (o) => { try { localStorage.setItem(KEY, JSON.stringify(o)); } c
 export default function Guestbook({ limit = 100, showAllLink = false }) {
   const [rows, setRows] = useState(null), [err, setErr] = useState('');
   const [name, setName] = useState(''), [message, setMessage] = useState(''), [website, setWebsite] = useState(''), [busy, setBusy] = useState(false);
-  const [own, setOwn] = useState(readOwn), [editing, setEditing] = useState(null); // {id, name, message}
+  const [own, setOwn] = useState(readOwn), [editing, setEditing] = useState(null);
   const toast = useToast();
   const fail = (er, fallback) => toast(er.response?.data?.error || fallback, 'err');
   const load = useCallback(() => {
@@ -30,7 +30,6 @@ export default function Guestbook({ limit = 100, showAllLink = false }) {
   };
   const headers = (id) => ({ 'x-edit-token': own[id] });
   const forget = (id) => { const next = { ...own }; delete next[id]; saveOwn(next); setOwn(next); };
-
   const saveEdit = async () => {
     try { await api.patch(`/api/guestbook/${editing.id}`, { name: editing.name, message: editing.message }, { headers: headers(editing.id) }); setEditing(null); toast('Entry updated'); load(); }
     catch (er) { fail(er, 'Could not update.'); }

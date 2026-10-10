@@ -41,7 +41,7 @@ export default function Admin() {
         {tab === 'users' && (!users ? <div className="skel" /> : (
           <table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Conv.</th><th>Joined</th><th /></tr></thead><tbody>
             {users.map((u) => (<tr key={u._id}><td>{u.name}</td><td>{u.email}</td><td>{u.role}</td><td>{u.conversions}</td><td>{fmt(u.createdAt)}</td>
-              <td>{u._id !== undefined && u.email !== user.email && <>
+              <td>{u.email !== user.email && <>
                 <button className="link" style={{ color: '#0b2a5b' }} onClick={toggle(u)}>{u.role === 'admin' ? 'Make user' : 'Make admin'}</button>{' '}
                 <button className="link" onClick={() => window.confirm(`Delete ${u.email} and their history?`) && del(u)()}>Delete</button></>}</td></tr>))}
           </tbody></table>))}
